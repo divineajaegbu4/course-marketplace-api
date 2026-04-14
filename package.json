@@ -1,0 +1,20 @@
+{
+  "name": "academy",
+  "version": "1.0.0",
+  "description": "A platform where Instructors create and manage digital courses, and Students browse, purchase, and access that content. The backend ensures that only students who have paid (enrolled) can see the private lesson modules",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "express": "^5.2.1",
+    "joi": "^18.1.2",
+    "jsonwebtoken": "^9.0.3",
+    "uuid": "^13.0.0"
+  }
+}
