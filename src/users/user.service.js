@@ -1,5 +1,7 @@
 import { BadRequestException } from "../exceptions/badrequest.exception.js";
 import { ConflictException } from "../exceptions/conflict.exception.js";
+import { NotFoundException } from "../exceptions/notfound.exception.js";
+import { ServerException } from "../exceptions/server.exception.js";
 import UserDataValidator from "./dto/user.dto.js";
 
 export class UserService {
@@ -41,6 +43,68 @@ export class UserService {
   }
 
   async findByEmail(email) {
-    return await this.userRepository.findByEmail(email);
+    const user = await this.userRepository.findByEmail(email);
+
+    if(!user) {
+      throw new NotFoundException("User not found")
+    }
+  }
+
+  async findById(id) {
+    const user =  await this.userRepository.findById(id)
+
+    if(!user) {
+      throw new NotFoundException("Invalid user ID:" + id)
+    }
+
+    // delete user.password
+  }
+
+  // async findByRole(role) {
+  //   const user =  structuredClone(await this.userRepository.findByRole(role))
+  // }
+
+  async getAllUsers() {
+    const user =  structuredClone(await this.userRepository.getAllUsers())
+
+    if(!user) {
+      throw new NotFoundException("User not found.")
+    }
+
+    user.forEach(user => delete user.password)
+
+    return user
+  }
+
+  async updateUser(id, updatedData) {
+    const validateData = UserDataValidator.validateUpdateUserData(updatedData)
+
+    if(validateData.error) {
+      throw new ServerException(validate.error.details[0].message)
+    }
+
+    if(updatedData.password) {
+     updatedData.password = await this.password(updatedData.password)
+    }
+
+    const updatedUser =  structuredClone(await this.userRepository.updateUser(id, updatedData))
+
+    if(!updatedUser) {
+      throw new NotFoundException("User not found. Invalid id:" + id)
+    }
+
+    delete updatedUser.password;
+
+    console.log("updatedUser", updatedUser);
+
+    return updatedUser;
+  }
+
+  async deleteUser(id) {
+    const deleteUser = await this.userRepository.deleteUser(id)
+
+    if(!deleteUser) {
+      throw new NotFoundException("User not found. Invalid id:" + id)
+    }
   }
 }

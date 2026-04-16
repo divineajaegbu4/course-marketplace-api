@@ -29,10 +29,6 @@ export class UserRepository {
     return this.users.find((user) => user.role === role) || null;
   }
 
-  async findByPassword(password) {
-    return this.users.find(user => user.password === password) || null;
-  }
-
   async updateUser(id, updatedData) {
     const index = this.users.findIndex((user) => user.id === id);
 
