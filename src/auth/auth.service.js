@@ -1,3 +1,6 @@
+import { BadRequestException } from "../exceptions/badrequest.exception.js";
+import { NotFoundException } from "../exceptions/notfound.exception.js";
+
 export class AuthService {
   constructor(userService, authToken, password) {
     this.userService = userService;
@@ -11,7 +14,7 @@ export class AuthService {
     try {
       user = await this.userService.createUser(signUpData);
     } catch (error) {
-      throw new Error(`Signup failed: ${error.message}`);
+      throw new BadRequestException(`Signup failed: ${error.message}`);
     }
 
     user.user_token = this.authToken.sign({
@@ -31,8 +34,11 @@ export class AuthService {
 
     console.log("user", user);
 
+    console.log("login data2:", loginData);
+
+
   if (!user) {
-      throw new Error("Invalid email or password");
+      throw new NotFoundException("Invalid email or password");
     }
 
     const isPassword = await this.password.verify(
@@ -43,7 +49,7 @@ export class AuthService {
     console.log(user.password);
 
     if (!isPassword) {
-      throw new Error("Invalid email or password");
+      throw new NotFoundException("Invalid email or password");
     }
 
     user.user_token = this.authToken.sign({
