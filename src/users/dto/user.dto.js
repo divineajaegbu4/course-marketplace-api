@@ -1,6 +1,6 @@
 import Joi from "joi";
 
-export class UserDataValidator {
+export default class UserDataValidator {
   static validateUserData(data) {
     const userSchema = Joi.object({
       fullname: Joi.string().min(3).max(50).required(),
