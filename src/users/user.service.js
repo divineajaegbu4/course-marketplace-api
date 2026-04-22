@@ -48,6 +48,8 @@ export class UserService {
     if(!user) {
       throw new NotFoundException("User not found")
     }
+
+    return user;
   }
 
   async findById(id) {
@@ -106,5 +108,7 @@ export class UserService {
     if(!deleteUser) {
       throw new NotFoundException("User not found. Invalid id:" + id)
     }
+
+    return deleteUser;
   }
 }

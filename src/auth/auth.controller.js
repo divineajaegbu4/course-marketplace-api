@@ -6,8 +6,12 @@ import { Password } from "../security/password.js";
 import { UserService } from "../users/user.service.js";
 import { AuthService } from "./auth.service.js";
 import { AuthToken } from "../security/auth.token.js";
+import { TokenDecoderMiddleware } from "../middlewares/token.decoder.middleware.js";
 
 const router = Router();
+
+// router.use(TokenDecoderMiddleware())
+
 
 const userRepository = new UserRepository(userDB);
 
@@ -16,6 +20,7 @@ const password = new Password();
 const userService = new UserService(userRepository, password);
 
 const authService = new AuthService(userService, AuthToken, password);
+
 
 router.post("/signup", async (req, res) => {
   const userData = req.body;

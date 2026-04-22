@@ -4,6 +4,7 @@ import { UserRepository } from "./user.repository.js";
 import { Password } from "../security/password.js";
 import { UserService } from "./user.service.js";
 import { TokenDecoderMiddleware } from "../middlewares/token.decoder.middleware.js";
+import { role } from "../middlewares/role.middleware.js";
 
 const router = Router()
 
@@ -20,7 +21,7 @@ const userService = new UserService(userRepository, password);
 
 export default router
 
-router.get("/me", async(req, res) => {
+router.get("/me", role(["instructor"]), async(req, res) => {
     try {
         const user = await userService.getAllUsers()
         res.status(200).json(user)
@@ -30,7 +31,7 @@ router.get("/me", async(req, res) => {
     }
 })
 
-router.patch("/me", async (req, res) => {
+router.patch("/me", role(["student"]), async (req, res) => {
     const updatedData = req.body;
     const {id} = req.user;
 
@@ -42,7 +43,7 @@ router.patch("/me", async (req, res) => {
     }
 })
 
-router.delete("/me", async (req, res) => {
+router.delete("/me", role(["instructor"]), async (req, res) => {
     const {id} = req.user;
 
     try {
