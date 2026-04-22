@@ -5,6 +5,7 @@ import { Password } from "../security/password.js";
 import { UserService } from "./user.service.js";
 import { TokenDecoderMiddleware } from "../middlewares/token.decoder.middleware.js";
 import { role } from "../middlewares/role.middleware.js";
+import { HttpResponse } from "../http/http.response.js";
 
 const router = Router()
 
@@ -24,9 +25,9 @@ export default router
 router.get("/me", role(["instructor"]), async(req, res) => {
     try {
         const user = await userService.getAllUsers()
-        res.status(200).json(user)
+        res.status(200).json(new HttpResponse(user))
     } catch (error) {
-        return res.status(error.status).json(error.message)
+        return res.status(error.code).json(new HttpResponse(null, "error", error.message))
         
     }
 })
@@ -37,9 +38,9 @@ router.patch("/me", role(["student"]), async (req, res) => {
 
     try {
         const updatedUser = await userService.updateUser(id, updatedData)
-        res.status(200).json(updatedUser)
+        res.status(200).json(new HttpResponse(updatedUser))
     } catch (error) {
-       return res.status(error.status).json(error.message)
+       return res.status(error.code).json(new HttpResponse(null, "error", error.message))
     }
 })
 
@@ -50,6 +51,6 @@ router.delete("/me", role(["instructor"]), async (req, res) => {
         await userService.deleteUser(id)
         res.status(204).send()
     } catch (error) {
-        return res.status(error.status).json(error.message)
+        return res.status(error.code).json(new HttpResponse(null, "error", error.message))
     }
 })

@@ -7,6 +7,7 @@ import { UserService } from "../users/user.service.js";
 import { AuthService } from "./auth.service.js";
 import { AuthToken } from "../security/auth.token.js";
 import { TokenDecoderMiddleware } from "../middlewares/token.decoder.middleware.js";
+import { HttpResponse } from "../http/http.response.js";
 
 const router = Router();
 
@@ -28,9 +29,9 @@ router.post("/signup", async (req, res) => {
   try {
     const user = await authService.signUp(userData);
 
-    res.status(201).json(user);
+    res.status(201).json(new HttpResponse(user));
   } catch (error) {
-    return res.status(400).json({ error: error.message });
+    return res.status(error.code).json(new HttpResponse(null, "error", error.message));
   }
 });
 
@@ -39,9 +40,9 @@ router.post("/login", async (req, res) => {
 
   try {
     const user = await authService.login(loginData);
-    res.status(201).json(user);
+    res.status(201).json(new HttpResponse(user));
   } catch (error) {
-    return res.status(400).json({ error: error.message });
+    return res.status(error.code).json(new HttpResponse(null, "error", error.message));
   }
 });
 
