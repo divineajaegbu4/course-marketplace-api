@@ -17,3 +17,5 @@ app.use("/auth", authController);
 app.listen(PORT, () => {
   console.log("Server is running on port:", PORT);
 });
+
+console.log("I am still alive")

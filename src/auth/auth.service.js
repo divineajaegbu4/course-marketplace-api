@@ -17,7 +17,7 @@ export class AuthService {
       throw new BadRequestException(`Signup failed: ${error.message}`);
     }
 
-    user.user_token = this.authToken.sign({
+    user.student_token = this.authToken.sign({
       id: user.id,
       email: user.email,
       role: user.role,
@@ -53,7 +53,7 @@ export class AuthService {
       throw new NotFoundException("Invalid email or password");
     }
 
-    user.user_token = this.authToken.sign({
+    user.student_token = this.authToken.sign({
       id: user.id,
       email: user.email,
       role: user.role,
