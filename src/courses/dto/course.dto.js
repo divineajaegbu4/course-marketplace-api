@@ -8,8 +8,8 @@ export class CourseDataValidator {
       price: Joi.number()
         .positive()
         .precision(2)
-        .valid("USD", "NGN", "EUR")
-        .default("USD")
+        // .valid("USD", "NGN", "EUR")
+        // .default("USD")
         .required(),
     });
 

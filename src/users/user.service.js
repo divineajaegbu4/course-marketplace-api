@@ -62,9 +62,17 @@ export class UserService {
     // delete user.password
   }
 
-  // async findByRole(role) {
-  //   const user =  structuredClone(await this.userRepository.findByRole(role))
-  // }
+  async findByRole(role) {
+    const user =  structuredClone(await this.userRepository.findByRole(role))
+
+    if(!user) {
+      throw new NotFoundException("Student not found with role:" + role)
+    }
+
+    user.forEach(user => delete user.password)
+
+    return user;
+  }
 
   async getAllUsers() {
     const user =  structuredClone(await this.userRepository.getAllUsers())

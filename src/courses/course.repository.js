@@ -1,4 +1,4 @@
-import { Identifier } from "../utils/identifier";
+import { Identifier } from "../utils/identifier.js";
 
 export class CourseRepository {
   constructor(courseDB) {
