@@ -6,6 +6,8 @@ export function role(roles) {
             throw new AuthenticationException("User not authenticated")
         }
 
+       
+
         if(roles.includes(req.user.role)) {
             console.log("Access granted!");
             return next();
