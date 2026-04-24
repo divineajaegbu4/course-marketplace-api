@@ -8,6 +8,7 @@ import { UserService } from "../users/user.service.js";
 import { role } from "../middlewares/role.middleware.js";
 import { authenticateToken} from "../middlewares/authenticateToken.middleware.js";
 import { HttpResponse } from "../http/http.response.js";
+import { BadRequestException } from "../exceptions/badrequest.exception.js";
 
 const router = Router();
 
@@ -45,6 +46,53 @@ router.get("/",  role(["instructor", "student"]), async (req, res) => {
       .json(new HttpResponse(null, "error", error.message));
   }
 });
+
+router.get("/:id", role(["instructor"]), async (req, res) => {
+    const { id } = req.params;
+
+    if(!id) {
+       return BadRequestException("Invalid course ID: " + id);
+    }
+
+    try {
+      const course = await courseService.findCourseById(id);
+      res.status(200).json(new HttpResponse(course))
+    } catch (error) {
+      return res.status(error.code).json(new HttpResponse(null, "error", error.message))
+    }
+})
+
+router.patch("/:id", role(["instructor"]), async (req, res) => {
+  const updatedData = req.body
+   const { id } = req.params;
+
+   if(!id) {
+     return BadRequestException("Invalid course ID: " + id)
+   }
+
+   try {
+     const updatedCourse = await courseService.updateCourse(id, updatedData);
+     res.status(200).json(new HttpResponse(updatedCourse))
+   } catch (error) {
+     return res.status(error.code).json(new HttpResponse(null, "error", error.message))
+   }
+})
+
+
+router.delete("/:id", role(["instructor"]), async (req, res) => {
+  const { id } = req.params;
+
+  if(!id) {
+    return BadRequestException("Invalid course ID: " + id)
+  }
+
+  try {
+    await courseService.deleteCourse(id);
+    res.status(204).send();
+  } catch (error) {
+    return res.status(error.code).json(new HttpResponse(null, "error", error.message))
+  }
+})
 
 
 

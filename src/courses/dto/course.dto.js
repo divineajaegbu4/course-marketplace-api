@@ -19,12 +19,11 @@ export class CourseDataValidator {
   static validateUpdateCourseData(data) {
     const updateCourseSchema = Joi.object({
       title: Joi.string().min(3).max(100),
-      description: Joi.string().min(10).max(500),
       price: Joi.number()
         .positive()
         .precision(2)
-        .valid("USD", "NGN", "EUR")
-        .default("USD"),
+        // .valid("USD", "NGN", "EUR")
+        // .default("USD"),
     });
 
     return updateCourseSchema.validate(data);

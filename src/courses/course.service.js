@@ -39,17 +39,55 @@ export class CourseService {
         if(courses.length === 0) {
             throw new NotFoundException("No courses found")
         }
-
-        
-         
+ 
         return courses;
     }
 
-    async findCourseById(id) {}
+    async findCourseById(id) {
+        const course = await this.courseRepository.findCourseById(id);
 
-    async getCourseByTitle(title) {}
+        if(!course) {
+            throw new NotFoundException("Course not found with ID: " + id)
+        }
 
-    async updateCourse(id, updatedData) {}
+        return course;
+    }
 
-    async deleteCourse(id) {}
+    async getCourseByTitle(title) {
+        const course = await this.courseRepository.getCourseByTitle(title);
+
+        if(!course) {
+            throw new NotFoundException("Course not found with title: " + title)
+        }
+
+        return course;
+    }
+
+    async updateCourse(id, updatedData) {
+         const validatedData = CourseDataValidator.validateUpdateCourseData(updatedData);
+
+        if(validatedData.error) {
+            throw new BadRequestException(validatedData.error.details[0].message)
+        }
+
+        const course = await this.courseRepository.updateCourse(id, updatedData);
+
+        console.log("course", course);
+
+        if(!course) {
+            throw new NotFoundException("Course not found with ID: " + id)
+        }
+
+        return course;
+    }
+
+    async deleteCourse(id) {
+        const course = await this.courseRepository.deleteCourse(id);
+
+        if(!course) {
+            throw new NotFoundException("Course not found with ID: " + id)
+        }
+
+        return course;
+    }
 }
