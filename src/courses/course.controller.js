@@ -6,17 +6,20 @@ import { UserRepository } from "../users/user.repository.js";
 import { CourseService } from "./course.service.js";
 import { UserService } from "../users/user.service.js";
 import { role } from "../middlewares/role.middleware.js";
-import { TokenDecoderMiddleware } from "../middlewares/token.decoder.middleware.js";
+import { authenticateToken} from "../middlewares/authenticateToken.middleware.js";
 import { HttpResponse } from "../http/http.response.js";
 
 const router = Router();
-router.use(TokenDecoderMiddleware());
+
+router.use(authenticateToken());
 
 const courseRepository = new CourseRepository(courseDB);
 const userRepository = new UserRepository(userDB);
 
 const userService = new UserService(userRepository);
 const courseService = new CourseService(courseRepository, userRepository);
+
+
 
 router.post("/", role(["instructor"]), async (req, res) => {
   const courseData = req.body;
@@ -32,7 +35,7 @@ router.post("/", role(["instructor"]), async (req, res) => {
   }
 });
 
-router.get("/", role(["instructor", "student"]), async (req, res) => {
+router.get("/",  role(["instructor", "student"]), async (req, res) => {
   try {
     const courses = await courseService.getAllCourses();
     res.status(200).json(new HttpResponse(courses));
@@ -42,5 +45,7 @@ router.get("/", role(["instructor", "student"]), async (req, res) => {
       .json(new HttpResponse(null, "error", error.message));
   }
 });
+
+
 
 export default router;

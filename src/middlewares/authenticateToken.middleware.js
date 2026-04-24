@@ -1,7 +1,7 @@
 import { AutthorizationException } from "../exceptions/authorization.exception.js";
 import { AuthToken } from "../security/auth.token.js";
 
-export function TokenDecoderMiddleware() {
+export function authenticateToken() {
     return (req, res, next) => {
         const authHeader = req.headers.authorization;
 

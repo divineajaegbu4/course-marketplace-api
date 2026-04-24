@@ -39,6 +39,8 @@ export class CourseService {
         if(courses.length === 0) {
             throw new NotFoundException("No courses found")
         }
+
+        
          
         return courses;
     }
