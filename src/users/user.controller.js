@@ -18,7 +18,7 @@ const password = new Password();
 
 const userService = new UserService(userRepository, password);
 
-export default router;
+
 
 router.get("/me", role(["instructor", "student"]), async (req, res) => {
   try {
@@ -79,3 +79,5 @@ router.delete("/me", role(["instructor"]), async (req, res) => {
       .json(new HttpResponse(null, "error", error.message));
   }
 });
+
+export default router;

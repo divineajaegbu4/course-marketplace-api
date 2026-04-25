@@ -3,9 +3,9 @@ import { NotFoundException } from "../exceptions/notfound.exception.js";
 import { CourseDataValidator } from "./dto/course.dto.js";
 
 export class CourseService {
-    constructor(courseRepository, userRepository) {
+    constructor(courseRepository, userService) {
         this.courseRepository = courseRepository;
-        this.userRepository = userRepository;
+        this.userService = userService;
     }
 
     async createCourse(courseData, userData) {
@@ -21,7 +21,7 @@ export class CourseService {
             throw new BadRequestException("Course with this title already exists")
         }
 
-        const user = await this.userRepository.findByRole(userData.role)
+        const user = await this.userService.findByRole(userData.role)
 
         console.log("user", user);
 

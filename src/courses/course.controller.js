@@ -9,6 +9,7 @@ import { role } from "../middlewares/role.middleware.js";
 import { authenticateToken} from "../middlewares/authenticateToken.middleware.js";
 import { HttpResponse } from "../http/http.response.js";
 import { BadRequestException } from "../exceptions/badrequest.exception.js";
+import { Password } from "../security/password.js";
 
 const router = Router();
 
@@ -17,8 +18,10 @@ router.use(authenticateToken());
 const courseRepository = new CourseRepository(courseDB);
 const userRepository = new UserRepository(userDB);
 
+const password = new Password();
+
 const userService = new UserService(userRepository);
-const courseService = new CourseService(courseRepository, userRepository);
+const courseService = new CourseService(courseRepository, userService);
 
 
 
