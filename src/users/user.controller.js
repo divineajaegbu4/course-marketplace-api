@@ -53,9 +53,7 @@ router.patch("/:id", role(["instructor"]), async (req, res) => {
   const updatedData = req.body;
   const { id } = req.params;
 
-  if (!id) {
-    return BadRequestException("Invalid student ID" + id);
-  }
+
 
   try {
     const updatedUser = await userService.updateUser(id, updatedData);

@@ -8,7 +8,6 @@ import { UserService } from "../users/user.service.js";
 import { role } from "../middlewares/role.middleware.js";
 import { authenticateToken} from "../middlewares/authenticateToken.middleware.js";
 import { HttpResponse } from "../http/http.response.js";
-import { BadRequestException } from "../exceptions/badrequest.exception.js";
 import { Password } from "../security/password.js";
 
 const router = Router();
@@ -53,10 +52,7 @@ router.get("/",  role(["instructor", "student"]), async (req, res) => {
 router.get("/:id", role(["instructor"]), async (req, res) => {
     const { id } = req.params;
 
-    if(!id) {
-       return BadRequestException("Invalid course ID: " + id);
-    }
-
+  
     try {
       const course = await courseService.findCourseById(id);
       res.status(200).json(new HttpResponse(course))
@@ -69,9 +65,6 @@ router.patch("/:id", role(["instructor"]), async (req, res) => {
   const updatedData = req.body
    const { id } = req.params;
 
-   if(!id) {
-     return BadRequestException("Invalid course ID: " + id)
-   }
 
    try {
      const updatedCourse = await courseService.updateCourse(id, updatedData);
@@ -85,9 +78,6 @@ router.patch("/:id", role(["instructor"]), async (req, res) => {
 router.delete("/:id", role(["instructor"]), async (req, res) => {
   const { id } = req.params;
 
-  if(!id) {
-    return BadRequestException("Invalid course ID: " + id)
-  }
 
   try {
     await courseService.deleteCourse(id);
