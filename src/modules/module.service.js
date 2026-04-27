@@ -5,9 +5,11 @@ import { ModuleDataValidator } from "./dto/module.dto.js";
 export class ModuleService {
     constructor(moduleRepository) {
         this.moduleRepository = moduleRepository;
+        this.countIndex = 0;
     }
 
     async createModule(moduleData) {
+
         const validatedModule = ModuleDataValidator.validateMouduleData(moduleData);
 
         if (validatedModule.error) {
@@ -18,6 +20,12 @@ export class ModuleService {
 
         if (existingModule) {
             throw new ConflictException("Module with this title already exists")
+        }
+
+        moduleData.order_index = ++this.countIndex
+
+        if(!moduleData.order_index) {
+            throw new BadRequestException(`Order index is invalid: ${moduleData.order_index}`)
         }
 
 

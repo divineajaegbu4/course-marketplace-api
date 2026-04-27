@@ -33,7 +33,7 @@ export class CourseService {
         return await this.courseRepository.createCourse(courseData);
     }
 
-    async getAllCourses(loginData) {
+    async getAllCourses() {
         const courses = await this.courseRepository.getAllCourses();
 
         if(courses.length === 0) {
