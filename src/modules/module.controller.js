@@ -1,6 +1,6 @@
 import { Router } from "express";
 import moduleDB from "../data/moduledb.json" assert { type: "json"}
-import { ModuleRepository } from "./dto/module.repository.js";
+import { ModuleRepository } from "./module.repository.js";
 import { ModuleService } from "./module.service.js";
 import { authenticateToken } from "../middlewares/authenticateToken.middleware.js";
 import { HttpResponse } from "../http/http.response.js";
