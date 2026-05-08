@@ -59,6 +59,7 @@ export class UserService {
       throw new NotFoundException("Invalid user ID:" + id)
     }
 
+    return user;
     // delete user.password
   }
 

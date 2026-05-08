@@ -19,11 +19,11 @@ export class CourseRepository {
     let filteredCourses = this.courseDB;
 
     if (title) {
-      filteredCourses = filteredCourses.filter(course => course.title === title)
+      filteredCourses = filteredCourses.filter(course => course.title.toLowerCase() === title.toLowerCase())
     }
 
     if (description) {
-      filteredCourses = filteredCourses.filter(course => course.description === description)
+      filteredCourses = filteredCourses.filter(course => course.description.toLowerCase() === description.toLowerCase())
     }
 
  
