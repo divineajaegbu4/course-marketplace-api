@@ -33,8 +33,8 @@ export class CourseService {
         return await this.courseRepository.createCourse(courseData);
     }
 
-    async getAllCourses() {
-        const courses = await this.courseRepository.getAllCourses();
+    async getAllCourses(queryFilter = {}) {
+        const courses = await this.courseRepository.getAllCourses(queryFilter);
 
         if(courses.length === 0) {
             throw new NotFoundException("No courses found")

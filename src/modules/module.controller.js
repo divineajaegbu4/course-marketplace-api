@@ -27,8 +27,12 @@ router.post("/", role(["instructor"]), async (req, res) => {
 })
 
 router.get("/", role(["student", "instructor"]), async (req, res) => {
+    const { title } = req.query  || ""
+    
+    const queryParams = { title };
+
     try {
-        const modules = await moduleService.getAllModules();
+        const modules = await moduleService.getAllModules(queryParams);
         res.status(200).json(new HttpResponse(modules))
     } catch (error) {
         return res.status(error.code).json(new HttpResponse(null, "error", error.message))

@@ -21,8 +21,13 @@ const userService = new UserService(userRepository, password);
 
 
 router.get("/me", role(["instructor", "student"]), async (req, res) => {
+ 
+const {role, fullname, email, search} = req.query || ""
+
+  const queryParams = {role, fullname, email, search};
+
   try {
-    const user = await userService.getAllUsers();
+    const user = await userService.getAllUsers(queryParams);
     res.status(200).json(new HttpResponse(user));
   } catch (error) {
     return res

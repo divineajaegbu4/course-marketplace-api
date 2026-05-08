@@ -13,8 +13,31 @@ export class CourseRepository {
     return courseData;
   }
 
-  async getAllCourses() {
-    return this.courseDB;
+  async getAllCourses(queryFilter = {}) {
+    const { title, description, search } = queryFilter;
+
+    let filteredCourses = this.courseDB;
+
+    if (title) {
+      filteredCourses = filteredCourses.filter(course => course.title === title)
+    }
+
+    if (description) {
+      filteredCourses = filteredCourses.filter(course => course.description === description)
+    }
+
+ 
+    if (search) {
+      filteredCourses = filteredCourses.filter(
+        (course) =>
+          course.title.toLowerCase().includes(search.toLowerCase()) ||
+          course.description.toLowerCase().includes(search.toLowerCase()) ||
+          course.price.toString().includes(search.toString())
+
+      );
+    }
+
+    return filteredCourses;
   }
 
   async findCourseById(id) {

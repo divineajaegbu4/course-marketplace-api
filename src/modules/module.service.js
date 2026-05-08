@@ -32,8 +32,8 @@ export class ModuleService {
         return await this.moduleRepository.createModule(moduleData);
     }
 
-    async getAllModules() {
-        const modules = await this.moduleRepository.getAllModules();
+    async getAllModules(queryFilter = {}) {
+        const modules = await this.moduleRepository.getAllModules(queryFilter);
 
         if (modules.length === 0) {
             throw new NotFoundException("No modules found")

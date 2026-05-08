@@ -19,8 +19,10 @@ export class EnrollmentService {
     return await this.enrollmentRepository.createEnrollment(enrollmentData);
   }
 
-  async getAllEnrollments() {
-    const enrollments = await this.enrollmentRepository.getAllEnrollments();
+  async getAllEnrollments(queryFilter = {}) {
+    const enrollments = await this.enrollmentRepository.getAllEnrollments(queryFilter);
+
+    console.log("eljel", enrollments);
 
     if (enrollments.length === 0) {
         throw new NotFoundException("No enrollments found")

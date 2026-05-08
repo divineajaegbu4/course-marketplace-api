@@ -73,8 +73,8 @@ export class UserService {
 
   }
 
-  async getAllUsers() {
-    const user =  structuredClone(await this.userRepository.getAllUsers())
+  async getAllUsers(queryFilter = {}) {
+    const user =  structuredClone(await this.userRepository.getAllUsers(queryFilter))
 
     if(!user) {
       throw new NotFoundException("User not found.")

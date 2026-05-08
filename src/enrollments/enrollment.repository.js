@@ -13,8 +13,21 @@ export class EnrollmentRepository {
     return enrollmentData;
   }
 
-  async getAllEnrollments() {
-    return this.enrollmentDB;
+  async getAllEnrollments(queryFilter = {}) {
+    const search = queryFilter.search;
+
+    let filteredEnrollments = this.enrollmentDB;
+
+    if (search) {
+      filteredEnrollments = filteredEnrollments.filter((enrollment) => {
+        if (!enrollment.progress || enrollment.progress === null) {
+          return false;
+        }
+        return enrollment.progress.toString().includes(search.toString());
+      });
+    }
+
+    return filteredEnrollments;
   }
 
   async findEnrollmentById(id) {

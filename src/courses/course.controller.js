@@ -39,8 +39,13 @@ router.post("/", role(["instructor"]), async (req, res) => {
 });
 
 router.get("/",  role(["instructor", "student"]), async (req, res) => {
+  const { title, description, price, search } = req.query || "";
+
+  // const queryParams = { title, description, price, search }
+
+  const queryParams = { title, description, price, search}
   try {
-    const courses = await courseService.getAllCourses();
+    const courses = await courseService.getAllCourses(queryParams);
     res.status(200).json(new HttpResponse(courses));
   } catch (error) {
     return res

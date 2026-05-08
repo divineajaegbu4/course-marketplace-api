@@ -30,8 +30,11 @@ router.get(
   "/my-learning",
   role(["student", "instructor"]),
   async (req, res) => {
+    const search = req.query.search || ""
+
+    const queryParam = { search };
     try {
-      const enrollments = await enrollmentService.getAllEnrollments();
+      const enrollments = await enrollmentService.getAllEnrollments(queryParam);
       res.status(200).json(new HttpResponse(enrollments));
     } catch (error) {
       return res

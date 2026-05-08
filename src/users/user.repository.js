@@ -13,8 +13,24 @@ export class UserRepository {
     return userData;
   }
 
-  async getAllUsers() {
-    return this.users;
+  async getAllUsers(queryFilter = {}) {
+    const { role, fullname, email, search } = queryFilter;
+
+    let filteredUsers = this.users;
+
+    if (role) {
+      filteredUsers = filteredUsers.filter((user) => user.role === role);
+    }
+
+    if (search) {
+      filteredUsers = filteredUsers.filter(
+        (user) =>
+          user.fullname.toLowerCase().includes(search.toLowerCase()) ||
+          user.email.toLowerCase().includes(search.toLowerCase()),
+      );
+    }
+
+    return filteredUsers;
   }
 
   async findById(id) {
