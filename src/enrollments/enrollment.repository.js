@@ -1,4 +1,6 @@
+import { Finder } from "../utils/finder.js";
 import { Identifier } from "../utils/identifier.js";
+import { QueryFilter } from "../utils/queryFilter.js";
 
 export class EnrollmentRepository {
   constructor(enrollmentDB) {
@@ -31,31 +33,23 @@ export class EnrollmentRepository {
   }
 
   async findEnrollmentById(id) {
-    return this.enrollmentDB.find((enrollment) => enrollment.id === id);
+    return await Finder.findItem(this.enrollmentDB, "id", id);
   }
 
   async findEnrollmentByUserId(userId) {
-    return this.enrollmentDB.filter(
-      (enrollment) => enrollment.user_id === userId,
-    );
+    return await QueryFilter.filter(this.enrollmentDB, "user_id", userId);
   }
 
   async findEnrollmentByCourseId(courseId) {
-    return this.enrollmentDB.filter(
-      (enrollment) => enrollment.course_id === courseId,
-    );
+    return await QueryFilter.filter(this.enrollmentDB, "course_id", courseId);
   }
 
   async findEnrollmentByProgress(progress) {
-    return this.enrollmentDB.filter(
-      (enrollment) => enrollment.progress === progress,
-    );
+    return await QueryFilter.filter(this.enrollmentDB, "progress", progress);
   }
 
   async updateEnrollment(id, updatedData) {
-    const enrollmentIndex = this.enrollmentDB.findIndex(
-      (enrollment) => enrollment.id === id,
-    );
+    const enrollmentIndex = await Finder.findIndex(this.enrollmentDB, "id", id);
 
     if (enrollmentIndex !== -1) {
       this.enrollmentDB[enrollmentIndex] = {
@@ -69,9 +63,7 @@ export class EnrollmentRepository {
   }
 
   async deleteEnrollment(id) {
-    const enrollmentIndex = this.enrollmentDB.findIndex(
-      (enrollment) => enrollment.id === id,
-    );
+    const enrollmentIndex = await Finder.findIndex(this.enrollmentDB, "id", id);
 
     if (enrollmentIndex !== -1) {
       this.enrollmentDB.splice(enrollmentIndex, 1);

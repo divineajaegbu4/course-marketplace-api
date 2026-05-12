@@ -1,3 +1,4 @@
+import { Finder } from "../utils/finder.js";
 import { Identifier } from "../utils/identifier.js";
 
 export class CourseRepository {
@@ -41,15 +42,15 @@ export class CourseRepository {
   }
 
   async findCourseById(id) {
-    return this.courseDB.find((course) => course.id === id);
+    return await Finder.findItem(this.courseDB, "id", id)
   }
 
   async getCourseByTitle(title) {
-    return this.courseDB.find((course) => course.title === title);
+    return await Finder.findItem(this.courseDB, "title", title);
   }
 
   async updateCourse(id, updatedData) {
-    const courseIndex = this.courseDB.findIndex((course) => course.id === id);
+    const courseIndex = await Finder.findIndex(this.courseDB, "id", id);
 
     if (courseIndex === -1) {
       return null;
@@ -64,7 +65,7 @@ export class CourseRepository {
   }
 
   async deleteCourse(id) {
-    const courseIndex = this.courseDB.findIndex((course) => course.id === id);
+    const courseIndex = await Finder.findIndex(this.courseDB, "id", id);
 
     if (courseIndex === -1) {
       return false;

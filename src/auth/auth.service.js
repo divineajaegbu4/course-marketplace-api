@@ -9,22 +9,16 @@ export class AuthService {
   }
 
   async signUp(signUpData) {
-    let user;
+    const user = await this.userService.createUser(signUpData);
 
-    try {
-      user = await this.userService.createUser(signUpData);
-    } catch (error) {
-      throw new BadRequestException(`Signup failed: ${error.message}`);
+    if (!user) {
+      throw new BadRequestException("Failed to create user")
     }
 
-    user.student_token = this.authToken.sign({
-      id: user.id,
-      email: user.email,
-      role: user.role,
-    });
-
-
-    return user;
+    return {
+      message: "User created successfully",
+      id: user.id
+    }
   }
 
   async login(loginData) {
@@ -37,8 +31,7 @@ export class AuthService {
 
     console.log("login data2:", loginData);
 
-
-  if (!user) {
+    if (!user) {
       throw new NotFoundException("Invalid email or password");
     }
 
@@ -53,7 +46,7 @@ export class AuthService {
       throw new NotFoundException("Invalid email or password");
     }
 
-    user.student_token = this.authToken.sign({
+    user.accessToken = this.authToken.sign({
       id: user.id,
       email: user.email,
       role: user.role,

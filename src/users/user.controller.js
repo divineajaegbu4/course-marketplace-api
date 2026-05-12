@@ -22,7 +22,7 @@ const userService = new UserService(userRepository, password);
 
 router.get("/me", role(["instructor", "student"]), async (req, res) => {
  
-const {role, fullname, email, search} = req.query || ""
+const {role, fullname, email, search} = req.query || "";
 
   const queryParams = {role, fullname, email, search};
 

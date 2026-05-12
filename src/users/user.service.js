@@ -81,7 +81,7 @@ export class UserService {
       throw new NotFoundException("User not found.")
     }
 
-    user.forEach(user => delete user.password && delete user.student_token)
+    user.forEach(user => delete user.password && delete user.accessToken)
 
     return user
   }

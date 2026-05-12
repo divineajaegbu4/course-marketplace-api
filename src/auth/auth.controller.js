@@ -26,7 +26,7 @@ router.post("/signup", async (req, res) => {
   try {
     const user = await authService.signUp(userData);
 
-    res.status(201).json(new HttpResponse(user));
+    res.status(201).json(user)
   } catch (error) {
     return res.status(error.code).json(new HttpResponse(null, "error", error.message));
   }

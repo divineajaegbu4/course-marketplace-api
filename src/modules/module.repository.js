@@ -1,4 +1,6 @@
+import { Finder } from "../utils/finder.js";
 import { Identifier } from "../utils/identifier.js";
+import { QueryFilter } from "../utils/queryFilter.js";
 
 export class ModuleRepository {
   constructor(moduleDB) {
@@ -19,9 +21,7 @@ export class ModuleRepository {
     let filteredModules = this.moduleDB;
 
     if (title) {
-      filteredModules = filteredModules.filter(
-        (module) => module.title === title,
-      );
+      filteredModules = await QueryFilter.filter(filteredModules, "title", title)
     }
 
     // if (order_index) {
@@ -42,15 +42,15 @@ export class ModuleRepository {
   }
 
   async getModuleById(id) {
-    return this.moduleDB.find((module) => module.id === id);
+    return await Finder.findItem(this.moduleDB, "id", id)
   }
 
   async getModuleByTitle(title) {
-    return this.moduleDB.find((module) => module.title === title);
+    return await Finder.findItem(this.moduleDB, "title", title);
   }
 
   async updateModule(id, updatedData) {
-    const moduleIndex = this.moduleDB.findIndex((module) => module.id === id);
+    const moduleIndex = await Finder.findIndex(this.moduleDB, "id", id);
 
     if (moduleIndex !== -1) {
       this.moduleDB[moduleIndex] = {
@@ -64,7 +64,7 @@ export class ModuleRepository {
   }
 
   async deleteModule(id) {
-    const moduleIndex = this.moduleDB.findIndex((module) => module.id === id);
+    const moduleIndex = await Finder.findIndex(this.moduleDB, "id", id);
 
     if (moduleIndex !== -1) {
       this.moduleDB.splice(moduleIndex, 1);

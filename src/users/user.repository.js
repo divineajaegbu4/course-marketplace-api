@@ -1,4 +1,6 @@
+import { Finder } from "../utils/finder.js";
 import { Identifier } from "../utils/identifier.js";
+import { QueryFilter } from "../utils/queryFilter.js";
 
 export class UserRepository {
   constructor(userDB = []) {
@@ -19,7 +21,7 @@ export class UserRepository {
     let filteredUsers = this.users;
 
     if (role) {
-      filteredUsers = filteredUsers.filter((user) => user.role === role);
+      filteredUsers = await QueryFilter.filter(filteredUsers, "role", role)
     }
 
     if (search) {
@@ -33,23 +35,25 @@ export class UserRepository {
     return filteredUsers;
   }
 
+
+
   async findById(id) {
-    return this.users.find((user) => user.id === id) || null;
+    return await Finder.findItem(this.users, "id", id);
   }
 
   async findByEmail(email) {
-    return this.users.find((user) => user.email === email) || null;
+    return await Finder.findItem(this.users, "email", email);
   }
 
   async findByRole(role) {
-    return this.users.find((user) => user.role === role) || null;
+    return await Finder.findItem(this.users, "role", role);
   }
 
   async updateUser(id, updatedData) {
-    const index = this.users.findIndex((user) => user.id === id);
+    const index = await Finder.findIndex(this.users, "id", id);
 
     if (index === -1) {
-      return "User is not found";
+      return null;
     }
 
     this.users[index] = { ...this.users[index], ...updatedData };
@@ -58,7 +62,7 @@ export class UserRepository {
   }
 
   async deleteUser(id) {
-    const index = this.users.findIndex((user) => user.id === id);
+    const index = await Finder.findIndex(this.users, "id", id);
 
     if (index === -1) {
       return "User is not found";
